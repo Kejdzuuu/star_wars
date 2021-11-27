@@ -5,30 +5,13 @@ const speciesRouter = express.Router();
 
 speciesRouter.get("/", async (req, res) => {
   const result = await speciesService.getAll();
-  let species = result.results;
-  const specieCount = result.count;
-  const speciesPerPage = result.results.length;
-  const numOfPages = Math.ceil(specieCount / speciesPerPage);
-
-  if (numOfPages > 1) {
-    // fetch pages from 2 to last
-    const pages = Array.from({ length: numOfPages - 1 }, (_x, i) =>
-      (i + 2).toString()
-    );
-    const responses = await Promise.all(
-      Array.from(pages, (page) => speciesService.getAll(page))
-    );
-    species = species.concat(
-      responses.map((response) => response.results).flat()
-    );
-  }
-  res.send(species);
+  res.send(result);
 });
 
-speciesRouter.get("/:page", async (req, res) => {
+speciesRouter.get("/page/:page", async (req, res) => {
   const page = req.params.page;
-  const species = await speciesService.getAll(page);
-  res.send(species.results);
+  const result = await speciesService.getPage(page);
+  res.send(result);
 });
 
 export default speciesRouter;

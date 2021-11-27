@@ -4,3 +4,4 @@ export const apiUrlSpecies = `${apiUrlBase}/species`;
 export const apiUrlVehicles = `${apiUrlBase}/vehicles`;
 export const apiUrlStarships = `${apiUrlBase}/starships`;
 export const apiUrlPlanets = `${apiUrlBase}/planets`;
+export const apiUrlPeople = `${apiUrlBase}/people`;
