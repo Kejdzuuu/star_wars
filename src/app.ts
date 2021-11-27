@@ -5,7 +5,8 @@ import speciesRouter from "./routes/species";
 import starshipsRouter from "./routes/starships";
 import vehiclesRouter from "./routes/vehicles";
 import peopleRouter from "./routes/people";
-import usersRouter from "./routes/users";
+import signupRouter from "./routes/signup";
+import loginRouter from "./routes/login";
 import mongoose, { ConnectOptions } from "mongoose";
 require("dotenv").config();
 
@@ -31,7 +32,8 @@ app.use("/species", speciesRouter);
 app.use("/starships", starshipsRouter);
 app.use("/vehicles", vehiclesRouter);
 app.use("/people", peopleRouter);
-app.use("/users", usersRouter);
+app.use("/signup", signupRouter);
+app.use("/login", loginRouter);
 
 app.listen(port, () => {
   return console.log(`server listening on port ${port}`);
