@@ -14,4 +14,10 @@ peopleRouter.get("/page/:page", async (req, res) => {
   res.send(result);
 });
 
+peopleRouter.get("/:id", async (req, res) => {
+  const id = req.params.id;
+  const result = await peopleService.getOne(id);
+  res.send(result);
+});
+
 export default peopleRouter;

@@ -19,12 +19,15 @@ export const getAll = async () => {
     const pages = Array.from({ length: numOfPages - 1 }, (_x, i) =>
       (i + 2).toString()
     );
-    const responses = await Promise.all(
-      Array.from(pages, (page) => getPage(page))
-    );
+    const responses = await Promise.all(pages.map((page) => getPage(page)));
     people = people.concat(responses.flat());
   }
   return people;
+};
+
+export const getOne = async (id: string) => {
+  const response = await axios.get(`${apiUrlPeople}/${id}`);
+  return response.data;
 };
 
 export const getRandom = async () => {

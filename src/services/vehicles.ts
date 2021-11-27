@@ -19,10 +19,18 @@ export const getAll = async () => {
     const pages = Array.from({ length: numOfPages - 1 }, (_x, i) =>
       (i + 2).toString()
     );
-    const responses = await Promise.all(
-      Array.from(pages, (page) => getPage(page))
-    );
+    const responses = await Promise.all(pages.map((page) => getPage(page)));
     vehicles = vehicles.concat(responses.flat());
   }
   return vehicles;
+};
+
+export const getOne = async (id: string) => {
+  const response = await axios.get(`${apiUrlVehicles}/${id}`);
+  return response.data;
+};
+
+export const getMany = async (ids: string[]) => {
+  const responses = await Promise.all(ids.map((id) => getOne(id)));
+  return responses.flat();
 };

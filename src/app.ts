@@ -1,4 +1,7 @@
 import express from "express";
+import mongoose, { ConnectOptions } from "mongoose";
+require("dotenv").config();
+
 import filmsRouter from "./routes/films";
 import planetsRouter from "./routes/planets";
 import speciesRouter from "./routes/species";
@@ -7,8 +10,7 @@ import vehiclesRouter from "./routes/vehicles";
 import peopleRouter from "./routes/people";
 import signupRouter from "./routes/signup";
 import loginRouter from "./routes/login";
-import mongoose, { ConnectOptions } from "mongoose";
-require("dotenv").config();
+import userRouter from "./routes/user";
 
 const app = express();
 const port = process.env.PORT;
@@ -34,6 +36,7 @@ app.use("/vehicles", vehiclesRouter);
 app.use("/people", peopleRouter);
 app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
+app.use("/user", userRouter);
 
 app.listen(port, () => {
   return console.log(`server listening on port ${port}`);
