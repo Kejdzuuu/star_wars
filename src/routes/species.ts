@@ -14,4 +14,10 @@ speciesRouter.get("/page/:page", async (req, res) => {
   res.send(result);
 });
 
+speciesRouter.get("/:id", async (req, res) => {
+  const id = req.params.id;
+  const result = await speciesService.getOne(id);
+  res.send(result);
+});
+
 export default speciesRouter;

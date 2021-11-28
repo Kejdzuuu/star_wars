@@ -2,7 +2,17 @@ import express from "express";
 import User from "../models/user";
 import * as peopleService from "../services/people";
 import * as filmsService from "../services/films";
-import { apiUrlFilms } from "../constants";
+import * as speciesService from "../services/species";
+import * as starshipsService from "../services/starships";
+import * as vehiclesService from "../services/vehicles";
+import * as planetsService from "../services/planets";
+import {
+  apiUrlFilms,
+  apiUrlPlanets,
+  apiUrlSpecies,
+  apiUrlStarships,
+  apiUrlVehicles,
+} from "../constants";
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -60,13 +70,12 @@ export const user_login_post = async (
   });
 };
 
-export const user_films_get = async (
+export const user_planet_get = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
 ) => {
   const token = getToken(req);
-  console.log(token);
   const decodedToken = token ? jwt.verify(token, process.env.SECRET) : null;
 
   if (!token || !decodedToken?.id) {
@@ -78,20 +87,130 @@ export const user_films_get = async (
     return res.status(401).json({ error: "user doesn't exist" });
   }
 
-  console.log(user);
+  const userCharacter = await peopleService.getOne(user.character_id);
+  if (!userCharacter) {
+    return res.status(401).json({ error: "character doesn't exist" });
+  }
+
+  const planetId = getIdFromUrl(userCharacter.homeworld, apiUrlPlanets);
+  const result = await planetsService.getOne(planetId);
+  res.send(result);
+};
+
+export const user_films_get = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const token = getToken(req);
+  const decodedToken = token ? jwt.verify(token, process.env.SECRET) : null;
+
+  if (!token || !decodedToken?.id) {
+    return res.status(401).json({ error: "invalid token" });
+  }
+
+  const user = await User.findById(decodedToken.id);
+  if (!user) {
+    return res.status(401).json({ error: "user doesn't exist" });
+  }
 
   const userCharacter = await peopleService.getOne(user.character_id);
   if (!userCharacter) {
     return res.status(401).json({ error: "character doesn't exist" });
   }
 
-  console.log(userCharacter);
-
   const filmIds = userCharacter.films.map((url: string) =>
     getIdFromUrl(url, apiUrlFilms)
   );
-  console.log(filmIds);
   const result = await filmsService.getMany(filmIds);
+  res.send(result);
+};
+
+export const user_species_get = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const token = getToken(req);
+  const decodedToken = token ? jwt.verify(token, process.env.SECRET) : null;
+
+  if (!token || !decodedToken?.id) {
+    return res.status(401).json({ error: "invalid token" });
+  }
+
+  const user = await User.findById(decodedToken.id);
+  if (!user) {
+    return res.status(401).json({ error: "user doesn't exist" });
+  }
+
+  const userCharacter = await peopleService.getOne(user.character_id);
+  if (!userCharacter) {
+    return res.status(401).json({ error: "character doesn't exist" });
+  }
+
+  const speciesIds = userCharacter.species.map((url: string) =>
+    getIdFromUrl(url, apiUrlSpecies)
+  );
+  const result = await speciesService.getMany(speciesIds);
+  res.send(result);
+};
+
+export const user_vehicles_get = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const token = getToken(req);
+  const decodedToken = token ? jwt.verify(token, process.env.SECRET) : null;
+
+  if (!token || !decodedToken?.id) {
+    return res.status(401).json({ error: "invalid token" });
+  }
+
+  const user = await User.findById(decodedToken.id);
+  if (!user) {
+    return res.status(401).json({ error: "user doesn't exist" });
+  }
+
+  const userCharacter = await peopleService.getOne(user.character_id);
+  if (!userCharacter) {
+    return res.status(401).json({ error: "character doesn't exist" });
+  }
+
+  const vehicleIds = userCharacter.vehicles.map((url: string) =>
+    getIdFromUrl(url, apiUrlVehicles)
+  );
+  const result = await vehiclesService.getMany(vehicleIds);
+  res.send(result);
+};
+
+export const user_starships_get = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const token = getToken(req);
+  const decodedToken = token ? jwt.verify(token, process.env.SECRET) : null;
+
+  if (!token || !decodedToken?.id) {
+    return res.status(401).json({ error: "invalid token" });
+  }
+
+  const user = await User.findById(decodedToken.id);
+  if (!user) {
+    return res.status(404).json({ error: "user doesn't exist" });
+  }
+
+  const userCharacter = await peopleService.getOne(user.character_id);
+  if (!userCharacter) {
+    return res.status(404).json({ error: "character doesn't exist" });
+  }
+
+  const starshipIds = userCharacter.starships.map((url: string) =>
+    getIdFromUrl(url, apiUrlStarships)
+  );
+
+  const result = await starshipsService.getMany(starshipIds);
   res.send(result);
 };
 

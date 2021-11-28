@@ -14,4 +14,10 @@ starshipsRouter.get("/page/:page", async (req, res) => {
   res.send(result);
 });
 
+starshipsRouter.get("/:id", async (req, res) => {
+  const id = req.params.id;
+  const result = await starshipsService.getOne(id);
+  res.send(result);
+});
+
 export default starshipsRouter;

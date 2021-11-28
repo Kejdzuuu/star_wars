@@ -14,4 +14,10 @@ vehiclesRouter.get("/page/:page", async (req, res) => {
   res.send(result);
 });
 
+vehiclesRouter.get("/:id", async (req, res) => {
+  const id = req.params.id;
+  const result = await vehiclesService.getOne(id);
+  res.send(result);
+});
+
 export default vehiclesRouter;

@@ -14,4 +14,10 @@ planetsRouter.get("/page/:page", async (req, res) => {
   res.send(result);
 });
 
+planetsRouter.get("/:id", async (req, res) => {
+  const id = req.params.id;
+  const result = await planetsService.getOne(id);
+  res.send(result);
+});
+
 export default planetsRouter;

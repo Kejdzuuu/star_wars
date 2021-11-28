@@ -14,4 +14,10 @@ filmsRouter.get("/page/:page", async (req, res) => {
   res.send(result);
 });
 
+filmsRouter.get("/:id", async (req, res) => {
+  const id = req.params.id;
+  const result = await filmsService.getOne(id);
+  res.send(result);
+});
+
 export default filmsRouter;

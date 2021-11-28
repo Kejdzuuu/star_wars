@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose, { ConnectOptions } from "mongoose";
+var logger = require("morgan");
 require("dotenv").config();
 
 import filmsRouter from "./routes/films";
@@ -12,6 +13,14 @@ import signupRouter from "./routes/signup";
 import loginRouter from "./routes/login";
 import userRouter from "./routes/user";
 
+const unknownEndpoint = (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  res.status(404).send({ error: "unknown endpoint" });
+};
+
 const app = express();
 const port = process.env.PORT;
 const mongoDB = process.env.MONGODB_URI;
@@ -21,6 +30,7 @@ mongoose.connect(mongoDB!, {
   useUnifiedTopology: true,
 } as ConnectOptions);
 
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -37,6 +47,8 @@ app.use("/people", peopleRouter);
 app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 app.use("/user", userRouter);
+
+app.use(unknownEndpoint);
 
 app.listen(port, () => {
   return console.log(`server listening on port ${port}`);
