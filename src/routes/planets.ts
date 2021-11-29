@@ -1,23 +1,12 @@
 import express from "express";
-import * as planetsService from "../services/planets";
+import * as planetsController from "../controllers/planetsController";
 
 const planetsRouter = express.Router();
 
-planetsRouter.get("/", async (req, res) => {
-  const result = await planetsService.getAll();
-  res.send(result);
-});
+planetsRouter.get("/", planetsController.planets_get);
 
-planetsRouter.get("/page/:page", async (req, res) => {
-  const page = req.params.page;
-  const result = await planetsService.getPage(page);
-  res.send(result);
-});
+planetsRouter.get("/page/:page", planetsController.planets_page_get);
 
-planetsRouter.get("/:id", async (req, res) => {
-  const id = req.params.id;
-  const result = await planetsService.getOne(id);
-  res.send(result);
-});
+planetsRouter.get("/:id", planetsController.planet_get);
 
 export default planetsRouter;

@@ -1,23 +1,12 @@
 import express from "express";
-import * as vehiclesService from "../services/vehicles";
+import * as vehiclesController from "../controllers/vehiclesController";
 
 const vehiclesRouter = express.Router();
 
-vehiclesRouter.get("/", async (req, res) => {
-  const result = await vehiclesService.getAll();
-  res.send(result);
-});
+vehiclesRouter.get("/", vehiclesController.vehicles_get);
 
-vehiclesRouter.get("/page/:page", async (req, res) => {
-  const page = req.params.page;
-  const result = await vehiclesService.getPage(page);
-  res.send(result);
-});
+vehiclesRouter.get("/page/:page", vehiclesController.vehicles_page_get);
 
-vehiclesRouter.get("/:id", async (req, res) => {
-  const id = req.params.id;
-  const result = await vehiclesService.getOne(id);
-  res.send(result);
-});
+vehiclesRouter.get("/:id", vehiclesController.vehicle_get);
 
 export default vehiclesRouter;

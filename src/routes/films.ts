@@ -1,23 +1,12 @@
 import express from "express";
-import * as filmsService from "../services/films";
+import * as filmsController from "../controllers/filmsController";
 
-const filmsRouter = express.Router();
+const filmsRouter = express.Router({ mergeParams: true });
 
-filmsRouter.get("/", async (req, res) => {
-  const result = await filmsService.getAll();
-  res.send(result);
-});
+filmsRouter.get("/", filmsController.films_get);
 
-filmsRouter.get("/page/:page", async (req, res) => {
-  const page = req.params.page;
-  const result = await filmsService.getPage(page);
-  res.send(result);
-});
+filmsRouter.get("/page/:page", filmsController.films_page_get);
 
-filmsRouter.get("/:id", async (req, res) => {
-  const id = req.params.id;
-  const result = await filmsService.getOne(id);
-  res.send(result);
-});
+filmsRouter.get("/:id", filmsController.film_get);
 
 export default filmsRouter;

@@ -1,20 +1,16 @@
 import express from "express";
 import User from "../models/user";
 import * as peopleService from "../services/people";
-import * as filmsService from "../services/films";
-import * as speciesService from "../services/species";
-import * as starshipsService from "../services/starships";
-import * as vehiclesService from "../services/vehicles";
-import * as planetsService from "../services/planets";
 import {
-  apiUrlFilms,
-  apiUrlPlanets,
-  apiUrlSpecies,
-  apiUrlStarships,
-  apiUrlVehicles,
-} from "../constants";
+  getToken,
+  get_film,
+  get_planet,
+  get_species,
+  get_starship,
+  get_vehicle,
+} from "./helpers";
 
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
 const jwt = require("jsonwebtoken");
 
 export const user_create_post = async (
@@ -92,8 +88,7 @@ export const user_planet_get = async (
     return res.status(401).json({ error: "character doesn't exist" });
   }
 
-  const planetId = getIdFromUrl(userCharacter.homeworld, apiUrlPlanets);
-  const result = await planetsService.getOne(planetId);
+  const result = get_planet(userCharacter.homeworld);
   res.send(result);
 };
 
@@ -119,10 +114,9 @@ export const user_films_get = async (
     return res.status(401).json({ error: "character doesn't exist" });
   }
 
-  const filmIds = userCharacter.films.map((url: string) =>
-    getIdFromUrl(url, apiUrlFilms)
+  const result = await Promise.all(
+    userCharacter.films.map((url: string) => get_film(url))
   );
-  const result = await filmsService.getMany(filmIds);
   res.send(result);
 };
 
@@ -148,10 +142,9 @@ export const user_species_get = async (
     return res.status(401).json({ error: "character doesn't exist" });
   }
 
-  const speciesIds = userCharacter.species.map((url: string) =>
-    getIdFromUrl(url, apiUrlSpecies)
+  const result = await Promise.all(
+    userCharacter.species.map((url: string) => get_species(url))
   );
-  const result = await speciesService.getMany(speciesIds);
   res.send(result);
 };
 
@@ -177,10 +170,9 @@ export const user_vehicles_get = async (
     return res.status(401).json({ error: "character doesn't exist" });
   }
 
-  const vehicleIds = userCharacter.vehicles.map((url: string) =>
-    getIdFromUrl(url, apiUrlVehicles)
+  const result = await Promise.all(
+    userCharacter.vehicles.map((url: string) => get_vehicle(url))
   );
-  const result = await vehiclesService.getMany(vehicleIds);
   res.send(result);
 };
 
@@ -206,22 +198,8 @@ export const user_starships_get = async (
     return res.status(404).json({ error: "character doesn't exist" });
   }
 
-  const starshipIds = userCharacter.starships.map((url: string) =>
-    getIdFromUrl(url, apiUrlStarships)
+  const result = await Promise.all(
+    userCharacter.starships.map((url: string) => get_starship(url))
   );
-
-  const result = await starshipsService.getMany(starshipIds);
   res.send(result);
-};
-
-const getToken = (req: express.Request) => {
-  const auth = req.get("authorization");
-  if (auth && auth.toLowerCase().startsWith("bearer ")) {
-    return auth.substring(7);
-  }
-  return null;
-};
-
-const getIdFromUrl = (url: string, baseUrl: string) => {
-  return url.slice(baseUrl.length + 1, -1);
 };
