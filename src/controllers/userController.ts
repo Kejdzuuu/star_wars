@@ -66,11 +66,12 @@ export const user_login_post = async (
   });
 };
 
-export const user_planet_get = async (
+export const user_auth = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
 ) => {
+  console.log("user auth!");
   const token = getToken(req);
   const decodedToken = token ? jwt.verify(token, process.env.SECRET) : null;
 
@@ -88,6 +89,18 @@ export const user_planet_get = async (
     return res.status(401).json({ error: "character doesn't exist" });
   }
 
+  res.locals.user = user;
+  res.locals.userCharacter = userCharacter;
+  next();
+};
+
+export const user_planet_get = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const userCharacter = res.locals.userCharacter;
+  console.log(userCharacter.homeworld);
   const result = get_planet(userCharacter.homeworld);
   res.send(result);
 };
@@ -97,22 +110,7 @@ export const user_films_get = async (
   res: express.Response,
   next: express.NextFunction
 ) => {
-  const token = getToken(req);
-  const decodedToken = token ? jwt.verify(token, process.env.SECRET) : null;
-
-  if (!token || !decodedToken?.id) {
-    return res.status(401).json({ error: "invalid token" });
-  }
-
-  const user = await User.findById(decodedToken.id);
-  if (!user) {
-    return res.status(401).json({ error: "user doesn't exist" });
-  }
-
-  const userCharacter = await peopleService.getOne(user.character_id);
-  if (!userCharacter) {
-    return res.status(401).json({ error: "character doesn't exist" });
-  }
+  const userCharacter = res.locals.userCharacter;
 
   const result = await Promise.all(
     userCharacter.films.map((url: string) => get_film(url))
@@ -125,22 +123,7 @@ export const user_species_get = async (
   res: express.Response,
   next: express.NextFunction
 ) => {
-  const token = getToken(req);
-  const decodedToken = token ? jwt.verify(token, process.env.SECRET) : null;
-
-  if (!token || !decodedToken?.id) {
-    return res.status(401).json({ error: "invalid token" });
-  }
-
-  const user = await User.findById(decodedToken.id);
-  if (!user) {
-    return res.status(401).json({ error: "user doesn't exist" });
-  }
-
-  const userCharacter = await peopleService.getOne(user.character_id);
-  if (!userCharacter) {
-    return res.status(401).json({ error: "character doesn't exist" });
-  }
+  const userCharacter = res.locals.userCharacter;
 
   const result = await Promise.all(
     userCharacter.species.map((url: string) => get_species(url))
@@ -153,22 +136,7 @@ export const user_vehicles_get = async (
   res: express.Response,
   next: express.NextFunction
 ) => {
-  const token = getToken(req);
-  const decodedToken = token ? jwt.verify(token, process.env.SECRET) : null;
-
-  if (!token || !decodedToken?.id) {
-    return res.status(401).json({ error: "invalid token" });
-  }
-
-  const user = await User.findById(decodedToken.id);
-  if (!user) {
-    return res.status(401).json({ error: "user doesn't exist" });
-  }
-
-  const userCharacter = await peopleService.getOne(user.character_id);
-  if (!userCharacter) {
-    return res.status(401).json({ error: "character doesn't exist" });
-  }
+  const userCharacter = res.locals.userCharacter;
 
   const result = await Promise.all(
     userCharacter.vehicles.map((url: string) => get_vehicle(url))
@@ -181,22 +149,7 @@ export const user_starships_get = async (
   res: express.Response,
   next: express.NextFunction
 ) => {
-  const token = getToken(req);
-  const decodedToken = token ? jwt.verify(token, process.env.SECRET) : null;
-
-  if (!token || !decodedToken?.id) {
-    return res.status(401).json({ error: "invalid token" });
-  }
-
-  const user = await User.findById(decodedToken.id);
-  if (!user) {
-    return res.status(404).json({ error: "user doesn't exist" });
-  }
-
-  const userCharacter = await peopleService.getOne(user.character_id);
-  if (!userCharacter) {
-    return res.status(404).json({ error: "character doesn't exist" });
-  }
+  const userCharacter = res.locals.userCharacter;
 
   const result = await Promise.all(
     userCharacter.starships.map((url: string) => get_starship(url))
