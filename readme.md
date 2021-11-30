@@ -1,6 +1,6 @@
 # Star Wars API
 
-Run out of time to put it in docker.
+Run out of time to put it in docker.<br />
 Needs a .env file, similar to .env.template
 
 ### `npm install`
@@ -9,7 +9,7 @@ Install dependencies.
 
 ### `npm start`
 
-Runs the app.\
+Runs the app.
 
 ## Documentation
 
@@ -71,7 +71,7 @@ Returns 10 vehicles
 
 ### /opening_crawl/word_count
 
-Returns array of words and their number of occurances in opening crawls.
+Returns array of words and their number of occurences in opening crawls.
 
 ### /opening_crawl/most_popular
 
@@ -91,8 +91,8 @@ Login. Needs 'email' and 'password' as input. Returns a token.
 
 ## User
 
-These endpoints need authentication.
-In header:
+These endpoints need authentication.<br />
+In header:<br />
 authorization: bearer ${token}
 
 ### /user/films
