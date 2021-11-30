@@ -6,13 +6,9 @@ interface WordCount {
   [word: string]: number;
 }
 
-export const unique_words_get = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) => {
+const get_sanitized_openings_words = async () => {
   const films = await get_all_films();
-  let pairs: WordCount = {};
+  let words: string[] = [];
 
   for (let film of films) {
     const punctuation_regex = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g;
@@ -25,12 +21,27 @@ export const unique_words_get = async (
       .replace(punctuation_regex, "")
       .split(" ")
       .filter((word: string) => word !== "");
-    for (let word of opening_words) {
-      if (pairs[word] == undefined) {
-        pairs[word] = 1;
-      } else {
-        pairs[word] += 1;
-      }
+    words = words.concat(opening_words);
+  }
+
+  return words;
+};
+
+export const unique_words_get = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const opening_words = await get_sanitized_openings_words();
+  let pairs: WordCount = {};
+
+  console.log(opening_words);
+
+  for (let word of opening_words) {
+    if (pairs[word] == undefined) {
+      pairs[word] = 1;
+    } else {
+      pairs[word] += 1;
     }
   }
   const sorted = Object.entries(pairs).sort((a, b) => b[1] - a[1]);
@@ -74,23 +85,11 @@ export const trie_nodes_count = async (
   res: express.Response,
   next: express.NextFunction
 ) => {
-  const films = await get_all_films();
+  const opening_words = await get_sanitized_openings_words();
   let words: string[] = [];
 
-  for (let film of films) {
-    const punctuation_regex = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g;
-    const opening_words = film.opening_crawl
-      .split("\r")
-      .join(" ")
-      .split("\n")
-      .join(" ")
-      .toLowerCase()
-      .replace(punctuation_regex, "")
-      .split(" ")
-      .filter((word: string) => word !== "");
-    for (let word of opening_words) {
-      if (!words.includes(word)) words.push(word);
-    }
+  for (let word of opening_words) {
+    if (!words.includes(word)) words.push(word);
   }
 
   let nodes_count = 1;
