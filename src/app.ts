@@ -12,6 +12,7 @@ import peopleRouter from "./routes/people";
 import signupRouter from "./routes/signup";
 import loginRouter from "./routes/login";
 import userRouter from "./routes/user";
+import openingCrawlRouter from "./routes/openingCrawl";
 
 const unknownEndpoint = (
   req: express.Request,
@@ -47,6 +48,7 @@ app.use("/people", peopleRouter);
 app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 app.use("/user", userRouter);
+app.use("/opening_crawl", openingCrawlRouter);
 
 app.use(unknownEndpoint);
 
