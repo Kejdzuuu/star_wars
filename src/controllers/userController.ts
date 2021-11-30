@@ -11,6 +11,13 @@ import {
 } from "./helpers";
 
 import bcrypt from "bcrypt";
+import {
+  apiUrlFilms,
+  apiUrlPlanets,
+  apiUrlSpecies,
+  apiUrlStarships,
+  apiUrlVehicles,
+} from "../constants";
 const jwt = require("jsonwebtoken");
 
 export const user_create_post = async (
@@ -71,7 +78,6 @@ export const user_auth = async (
   res: express.Response,
   next: express.NextFunction
 ) => {
-  console.log("user auth!");
   const token = getToken(req);
   const decodedToken = token ? jwt.verify(token, process.env.SECRET) : null;
 
@@ -94,7 +100,7 @@ export const user_auth = async (
   next();
 };
 
-export const user_planet_get = async (
+export const user_homeworld_get = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
@@ -103,6 +109,40 @@ export const user_planet_get = async (
   console.log(userCharacter.homeworld);
   const result = get_planet(userCharacter.homeworld);
   res.send(result);
+};
+
+export const user_planet_get = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const id = req.params.id;
+  const url = `${apiUrlPlanets}/${id}/`;
+  const userCharacter = res.locals.userCharacter;
+
+  if (userCharacter.homeworld === url) {
+    const result = await get_planet(url);
+    res.send(result);
+  } else {
+    return res.status(403).json({ error: "no access" });
+  }
+};
+
+export const user_film_get = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const id = req.params.id;
+  const url = `${apiUrlFilms}/${id}/`;
+  const userCharacter = res.locals.userCharacter;
+
+  if (userCharacter.films.includes(url)) {
+    const result = await get_film(url);
+    res.send(result);
+  } else {
+    return res.status(403).json({ error: "no access" });
+  }
 };
 
 export const user_films_get = async (
@@ -118,7 +158,24 @@ export const user_films_get = async (
   res.send(result);
 };
 
-export const user_species_get = async (
+export const user_one_species_get = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const id = req.params.id;
+  const url = `${apiUrlSpecies}/${id}/`;
+  const userCharacter = res.locals.userCharacter;
+
+  if (userCharacter.species.includes(url)) {
+    const result = await get_species(url);
+    res.send(result);
+  } else {
+    return res.status(403).json({ error: "no access" });
+  }
+};
+
+export const user_all_species_get = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
@@ -129,6 +186,23 @@ export const user_species_get = async (
     userCharacter.species.map((url: string) => get_species(url))
   );
   res.send(result);
+};
+
+export const user_vehicle_get = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const id = req.params.id;
+  const url = `${apiUrlVehicles}/${id}/`;
+  const userCharacter = res.locals.userCharacter;
+
+  if (userCharacter.vehicles.includes(url)) {
+    const result = await get_vehicle(url);
+    res.send(result);
+  } else {
+    return res.status(403).json({ error: "no access" });
+  }
 };
 
 export const user_vehicles_get = async (
@@ -142,6 +216,23 @@ export const user_vehicles_get = async (
     userCharacter.vehicles.map((url: string) => get_vehicle(url))
   );
   res.send(result);
+};
+
+export const user_starship_get = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const id = req.params.id;
+  const url = `${apiUrlStarships}/${id}/`;
+  const userCharacter = res.locals.userCharacter;
+
+  if (userCharacter.starships.includes(url)) {
+    const result = await get_starship(url);
+    res.send(result);
+  } else {
+    return res.status(403).json({ error: "no access" });
+  }
 };
 
 export const user_starships_get = async (
