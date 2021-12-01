@@ -87,12 +87,12 @@ export const user_auth = async (
 
   const user = await User.findById(decodedToken.id);
   if (!user) {
-    return res.status(401).json({ error: "user doesn't exist" });
+    return res.status(404).json({ error: "user doesn't exist" });
   }
 
   const userCharacter = await peopleService.getOne(user.character_id);
   if (!userCharacter) {
-    return res.status(401).json({ error: "character doesn't exist" });
+    return res.status(404).json({ error: "character doesn't exist" });
   }
 
   res.locals.user = user;
@@ -122,6 +122,9 @@ export const user_planet_get = async (
 
   if (userCharacter.homeworld === url) {
     const result = await get_planet(url);
+    if (result === null) {
+      return res.status(404).json({ error: "resource doesn't exist" });
+    }
     res.send(result);
   } else {
     return res.status(403).json({ error: "no access" });
@@ -139,6 +142,9 @@ export const user_film_get = async (
 
   if (userCharacter.films.includes(url)) {
     const result = await get_film(url);
+    if (result === null) {
+      return res.status(404).json({ error: "resource doesn't exist" });
+    }
     res.send(result);
   } else {
     return res.status(403).json({ error: "no access" });
@@ -155,6 +161,9 @@ export const user_films_get = async (
   const result = await Promise.all(
     userCharacter.films.map((url: string) => get_film(url))
   );
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };
 
@@ -169,6 +178,9 @@ export const user_one_species_get = async (
 
   if (userCharacter.species.includes(url)) {
     const result = await get_species(url);
+    if (result === null) {
+      return res.status(404).json({ error: "resource doesn't exist" });
+    }
     res.send(result);
   } else {
     return res.status(403).json({ error: "no access" });
@@ -185,6 +197,9 @@ export const user_all_species_get = async (
   const result = await Promise.all(
     userCharacter.species.map((url: string) => get_species(url))
   );
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };
 
@@ -199,6 +214,9 @@ export const user_vehicle_get = async (
 
   if (userCharacter.vehicles.includes(url)) {
     const result = await get_vehicle(url);
+    if (result === null) {
+      return res.status(404).json({ error: "resource doesn't exist" });
+    }
     res.send(result);
   } else {
     return res.status(403).json({ error: "no access" });
@@ -215,6 +233,9 @@ export const user_vehicles_get = async (
   const result = await Promise.all(
     userCharacter.vehicles.map((url: string) => get_vehicle(url))
   );
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };
 
@@ -229,6 +250,9 @@ export const user_starship_get = async (
 
   if (userCharacter.starships.includes(url)) {
     const result = await get_starship(url);
+    if (result === null) {
+      return res.status(404).json({ error: "resource doesn't exist" });
+    }
     res.send(result);
   } else {
     return res.status(403).json({ error: "no access" });
@@ -245,5 +269,8 @@ export const user_starships_get = async (
   const result = await Promise.all(
     userCharacter.starships.map((url: string) => get_starship(url))
   );
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };

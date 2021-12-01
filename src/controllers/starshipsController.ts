@@ -8,6 +8,9 @@ export const starships_get = async (
   next: express.NextFunction
 ) => {
   const result = await get_all_starships();
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };
 
@@ -21,6 +24,9 @@ export const starships_page_get = async (
     next();
   }
   const result = await get_starships_page(page);
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };
 
@@ -32,5 +38,8 @@ export const starship_get = async (
   const id = req.params.id;
   const url = `${apiUrlStarships}/${id}/`;
   const result = await get_starship(url);
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };

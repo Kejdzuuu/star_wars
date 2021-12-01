@@ -49,16 +49,18 @@ export const get_film = async (url: string) => {
       }
     );
     const result = await filmsService.getOne(id);
-    Film.findOneAndUpdate(
-      { url: result.url },
-      result,
-      { upsert: true },
-      (err, returned_query) => {
-        if (err) {
-          console.log(err);
+    if (result) {
+      Film.findOneAndUpdate(
+        { url: result.url },
+        result,
+        { upsert: true },
+        (err, returned_query) => {
+          if (err) {
+            console.log(err);
+          }
         }
-      }
-    );
+      );
+    }
     return result;
   }
 };
@@ -89,17 +91,19 @@ export const get_all_films = async () => {
       }
     );
     const result = await filmsService.getAll();
-    for (let film of result) {
-      Film.findOneAndUpdate(
-        { url: film.url },
-        film,
-        { upsert: true },
-        (err, returned_query) => {
-          if (err) {
-            console.log(err);
+    if (result) {
+      for (let film of result) {
+        Film.findOneAndUpdate(
+          { url: film.url },
+          film,
+          { upsert: true },
+          (err, returned_query) => {
+            if (err) {
+              console.log(err);
+            }
           }
-        }
-      );
+        );
+      }
     }
     return result;
   }
@@ -139,17 +143,19 @@ export const get_films_page = async (page: number) => {
       }
     );
     const result = await filmsService.getPage(page.toString());
-    for (let film of result) {
-      Film.findOneAndUpdate(
-        { url: film.url },
-        film,
-        { upsert: true },
-        (err, returned_query) => {
-          if (err) {
-            console.log(err);
+    if (result) {
+      for (let film of result) {
+        Film.findOneAndUpdate(
+          { url: film.url },
+          film,
+          { upsert: true },
+          (err, returned_query) => {
+            if (err) {
+              console.log(err);
+            }
           }
-        }
-      );
+        );
+      }
     }
     return result;
   }
@@ -182,16 +188,18 @@ export const get_species = async (url: string) => {
       }
     );
     const result = await speciesService.getOne(id);
-    Species.findOneAndUpdate(
-      { url: result.url },
-      result,
-      { upsert: true },
-      (err, returned_query) => {
-        if (err) {
-          console.log(err);
+    if (result) {
+      Species.findOneAndUpdate(
+        { url: result.url },
+        result,
+        { upsert: true },
+        (err, returned_query) => {
+          if (err) {
+            console.log(err);
+          }
         }
-      }
-    );
+      );
+    }
     return result;
   }
 };
@@ -222,17 +230,19 @@ export const get_all_species = async () => {
       }
     );
     const result = await speciesService.getAll();
-    for (let species of result) {
-      Species.findOneAndUpdate(
-        { url: species.url },
-        species,
-        { upsert: true },
-        (err, returned_query) => {
-          if (err) {
-            console.log(err);
+    if (result) {
+      for (let species of result) {
+        Species.findOneAndUpdate(
+          { url: species.url },
+          species,
+          { upsert: true },
+          (err, returned_query) => {
+            if (err) {
+              console.log(err);
+            }
           }
-        }
-      );
+        );
+      }
     }
     return result;
   }
@@ -272,17 +282,19 @@ export const get_species_page = async (page: number) => {
       }
     );
     const result = await speciesService.getPage(page.toString());
-    for (let species of result) {
-      Species.findOneAndUpdate(
-        { url: species.url },
-        species,
-        { upsert: true },
-        (err, returned_query) => {
-          if (err) {
-            console.log(err);
+    if (result) {
+      for (let species of result) {
+        Species.findOneAndUpdate(
+          { url: species.url },
+          species,
+          { upsert: true },
+          (err, returned_query) => {
+            if (err) {
+              console.log(err);
+            }
           }
-        }
-      );
+        );
+      }
     }
     return result;
   }
@@ -315,16 +327,18 @@ export const get_vehicle = async (url: string) => {
       }
     );
     const result = await vehiclesService.getOne(id);
-    Vehicle.findOneAndUpdate(
-      { url: result.url },
-      result,
-      { upsert: true },
-      (err, returned_query) => {
-        if (err) {
-          console.log(err);
+    if (result) {
+      Vehicle.findOneAndUpdate(
+        { url: result.url },
+        result,
+        { upsert: true },
+        (err, returned_query) => {
+          if (err) {
+            console.log(err);
+          }
         }
-      }
-    );
+      );
+    }
     return result;
   }
 };
@@ -355,17 +369,19 @@ export const get_all_vehicles = async () => {
       }
     );
     const result = await vehiclesService.getAll();
-    for (let vehicle of result) {
-      Vehicle.findOneAndUpdate(
-        { url: vehicle.url },
-        vehicle,
-        { upsert: true },
-        (err, returned_query) => {
-          if (err) {
-            console.log(err);
+    if (result) {
+      for (let vehicle of result) {
+        Vehicle.findOneAndUpdate(
+          { url: vehicle.url },
+          vehicle,
+          { upsert: true },
+          (err, returned_query) => {
+            if (err) {
+              console.log(err);
+            }
           }
-        }
-      );
+        );
+      }
     }
     return result;
   }
@@ -405,17 +421,19 @@ export const get_vehicles_page = async (page: number) => {
       }
     );
     const result = await vehiclesService.getPage(page.toString());
-    for (let vehicle of result) {
-      Vehicle.findOneAndUpdate(
-        { url: vehicle.url },
-        vehicle,
-        { upsert: true },
-        (err, returned_query) => {
-          if (err) {
-            console.log(err);
+    if (result) {
+      for (let vehicle of result) {
+        Vehicle.findOneAndUpdate(
+          { url: vehicle.url },
+          vehicle,
+          { upsert: true },
+          (err, returned_query) => {
+            if (err) {
+              console.log(err);
+            }
           }
-        }
-      );
+        );
+      }
     }
     return result;
   }
@@ -448,16 +466,18 @@ export const get_starship = async (url: string) => {
       }
     );
     const result = await starshipsService.getOne(id);
-    Starship.findOneAndUpdate(
-      { url: result.url },
-      result,
-      { upsert: true },
-      (err, returned_query) => {
-        if (err) {
-          console.log(err);
+    if (result) {
+      Starship.findOneAndUpdate(
+        { url: result.url },
+        result,
+        { upsert: true },
+        (err, returned_query) => {
+          if (err) {
+            console.log(err);
+          }
         }
-      }
-    );
+      );
+    }
     return result;
   }
 };
@@ -488,17 +508,19 @@ export const get_all_starships = async () => {
       }
     );
     const result = await starshipsService.getAll();
-    for (let starship of result) {
-      Starship.findOneAndUpdate(
-        { url: starship.url },
-        starship,
-        { upsert: true },
-        (err, returned_query) => {
-          if (err) {
-            console.log(err);
+    if (result) {
+      for (let starship of result) {
+        Starship.findOneAndUpdate(
+          { url: starship.url },
+          starship,
+          { upsert: true },
+          (err, returned_query) => {
+            if (err) {
+              console.log(err);
+            }
           }
-        }
-      );
+        );
+      }
     }
     return result;
   }
@@ -538,17 +560,19 @@ export const get_starships_page = async (page: number) => {
       }
     );
     const result = await starshipsService.getPage(page.toString());
-    for (let starship of result) {
-      Starship.findOneAndUpdate(
-        { url: starship.url },
-        starship,
-        { upsert: true },
-        (err, returned_query) => {
-          if (err) {
-            console.log(err);
+    if (result) {
+      for (let starship of result) {
+        Starship.findOneAndUpdate(
+          { url: starship.url },
+          starship,
+          { upsert: true },
+          (err, returned_query) => {
+            if (err) {
+              console.log(err);
+            }
           }
-        }
-      );
+        );
+      }
     }
     return result;
   }
@@ -581,16 +605,18 @@ export const get_planet = async (url: string) => {
       }
     );
     const result = await planetsService.getOne(id);
-    Planet.findOneAndUpdate(
-      { url: result.url },
-      result,
-      { upsert: true },
-      (err, returned_query) => {
-        if (err) {
-          console.log(err);
+    if (result) {
+      Planet.findOneAndUpdate(
+        { url: result.url },
+        result,
+        { upsert: true },
+        (err, returned_query) => {
+          if (err) {
+            console.log(err);
+          }
         }
-      }
-    );
+      );
+    }
     return result;
   }
 };
@@ -621,17 +647,19 @@ export const get_all_planets = async () => {
       }
     );
     const result = await planetsService.getAll();
-    for (let planet of result) {
-      Planet.findOneAndUpdate(
-        { url: planet.url },
-        planet,
-        { upsert: true },
-        (err, returned_query) => {
-          if (err) {
-            console.log(err);
+    if (result) {
+      for (let planet of result) {
+        Planet.findOneAndUpdate(
+          { url: planet.url },
+          planet,
+          { upsert: true },
+          (err, returned_query) => {
+            if (err) {
+              console.log(err);
+            }
           }
-        }
-      );
+        );
+      }
     }
     return result;
   }
@@ -671,17 +699,19 @@ export const get_planets_page = async (page: number) => {
       }
     );
     const result = await planetsService.getPage(page.toString());
-    for (let planet of result) {
-      Planet.findOneAndUpdate(
-        { url: planet.url },
-        planet,
-        { upsert: true },
-        (err, returned_query) => {
-          if (err) {
-            console.log(err);
+    if (result) {
+      for (let planet of result) {
+        Planet.findOneAndUpdate(
+          { url: planet.url },
+          planet,
+          { upsert: true },
+          (err, returned_query) => {
+            if (err) {
+              console.log(err);
+            }
           }
-        }
-      );
+        );
+      }
     }
     return result;
   }

@@ -2,8 +2,12 @@ import axios from "axios";
 import { apiUrlStarships } from "../constants";
 
 export const getPage = async (page: string = "1") => {
-  const response = await axios.get(`${apiUrlStarships}/?page=${page}`);
-  return response.data.results;
+  try {
+    const response = await axios.get(`${apiUrlStarships}/?page=${page}`);
+    return response.data.results;
+  } catch (e) {
+    return null;
+  }
 };
 
 export const getAll = async () => {
@@ -26,11 +30,10 @@ export const getAll = async () => {
 };
 
 export const getOne = async (id: string) => {
-  const response = await axios.get(`${apiUrlStarships}/${id}`);
-  return response.data;
-};
-
-export const getMany = async (ids: string[]) => {
-  const responses = await Promise.all(ids.map((id) => getOne(id)));
-  return responses.flat();
+  try {
+    const response = await axios.get(`${apiUrlStarships}/${id}`);
+    return response.data;
+  } catch (e) {
+    return null;
+  }
 };

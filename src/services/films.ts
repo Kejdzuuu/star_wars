@@ -2,8 +2,12 @@ import axios from "axios";
 import { apiUrlFilms } from "../constants";
 
 export const getPage = async (page: string = "1") => {
-  const response = await axios.get(`${apiUrlFilms}/?page=${page}`);
-  return response.data.results;
+  try {
+    const response = await axios.get(`${apiUrlFilms}/?page=${page}`);
+    return response.data.results;
+  } catch (e) {
+    return null;
+  }
 };
 
 export const getAll = async () => {
@@ -20,17 +24,18 @@ export const getAll = async () => {
       (i + 2).toString()
     );
     const responses = await Promise.all(pages.map((page) => getPage(page)));
-    films = films.concat(responses.flat());
+    films = films.concat(
+      responses.filter((response) => response !== null).flat()
+    );
   }
   return films;
 };
 
 export const getOne = async (id: string) => {
-  const response = await axios.get(`${apiUrlFilms}/${id}`);
-  return response.data;
-};
-
-export const getMany = async (ids: string[]) => {
-  const responses = await Promise.all(ids.map((id) => getOne(id)));
-  return responses.flat();
+  try {
+    const response = await axios.get(`${apiUrlFilms}/${id}`);
+    return response.data;
+  } catch (e) {
+    return null;
+  }
 };

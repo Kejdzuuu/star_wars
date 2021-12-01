@@ -2,8 +2,12 @@ import axios from "axios";
 import { apiUrlPeople } from "../constants";
 
 export const getPage = async (page: string = "1") => {
-  const response = await axios.get(`${apiUrlPeople}/?page=${page}`);
-  return response.data.results;
+  try {
+    const response = await axios.get(`${apiUrlPeople}/?page=${page}`);
+    return response.data.results;
+  } catch (e) {
+    return null;
+  }
 };
 
 export const getAll = async () => {
@@ -20,14 +24,20 @@ export const getAll = async () => {
       (i + 2).toString()
     );
     const responses = await Promise.all(pages.map((page) => getPage(page)));
-    people = people.concat(responses.flat());
+    people = people.concat(
+      responses.filter((response) => response !== null).flat()
+    );
   }
   return people;
 };
 
 export const getOne = async (id: string) => {
-  const response = await axios.get(`${apiUrlPeople}/${id}`);
-  return response.data;
+  try {
+    const response = await axios.get(`${apiUrlPeople}/${id}`);
+    return response.data;
+  } catch (e) {
+    return null;
+  }
 };
 
 export const getRandom = async () => {

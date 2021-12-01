@@ -8,6 +8,9 @@ export const vehicles_get = async (
   next: express.NextFunction
 ) => {
   const result = await get_all_vehicles();
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };
 
@@ -21,6 +24,9 @@ export const vehicles_page_get = async (
     next();
   }
   const result = await get_vehicles_page(page);
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };
 
@@ -32,5 +38,8 @@ export const vehicle_get = async (
   const id = req.params.id;
   const url = `${apiUrlVehicles}/${id}/`;
   const result = await get_vehicle(url);
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };

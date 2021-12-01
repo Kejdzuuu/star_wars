@@ -8,6 +8,9 @@ export const films_get = async (
   next: express.NextFunction
 ) => {
   const result = await get_all_films();
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };
 
@@ -21,6 +24,9 @@ export const films_page_get = async (
     next();
   }
   const result = await get_films_page(page);
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };
 
@@ -32,5 +38,8 @@ export const film_get = async (
   const id = req.params.id;
   const url = `${apiUrlFilms}/${id}/`;
   const result = await get_film(url);
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };

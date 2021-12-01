@@ -8,6 +8,9 @@ export const planets_get = async (
   next: express.NextFunction
 ) => {
   const result = await get_all_planets();
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };
 
@@ -21,6 +24,9 @@ export const planets_page_get = async (
     next();
   }
   const result = await get_planets_page(page);
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };
 
@@ -32,5 +38,8 @@ export const planet_get = async (
   const id = req.params.id;
   const url = `${apiUrlPlanets}/${id}/`;
   const result = await get_planet(url);
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };

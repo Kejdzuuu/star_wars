@@ -8,6 +8,9 @@ export const species_get_all = async (
   next: express.NextFunction
 ) => {
   const result = await get_all_species();
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };
 
@@ -21,6 +24,9 @@ export const species_page_get = async (
     next();
   }
   const result = await get_species_page(page);
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };
 
@@ -32,5 +38,8 @@ export const species_get_one = async (
   const id = req.params.id;
   const url = `${apiUrlSpecies}/${id}/`;
   const result = await get_species(url);
+  if (result === null) {
+    return res.status(404).json({ error: "resource doesn't exist" });
+  }
   res.send(result);
 };
